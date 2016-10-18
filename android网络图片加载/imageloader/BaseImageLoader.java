@@ -10,6 +10,10 @@ import android.content.Context;
  *
  */
 public interface BaseImageLoader {
+    /*加载图片*/
     void loadImage(Context context, LoaderParameter loaderParameter);
+    /*清除、释放资源*/
     void clear(Context context);
+    /*取消请求*/
+    void cancel(Object object);
 }

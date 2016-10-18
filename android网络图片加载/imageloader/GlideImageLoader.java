@@ -1,6 +1,7 @@
 package com.j1.healthcare.patient.utils.imageloader;
 
 import android.content.Context;
+import android.view.View;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
@@ -8,6 +9,10 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.stream.StreamModelLoader;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.Target;
+import com.j1.healthcare.patient.view.common.CircleImageView;
+import com.lidroid.xutils.util.LogUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +26,7 @@ import java.io.InputStream;
  */
 public class GlideImageLoader implements BaseImageLoader{
 
+    private static final String TAG = GlideImageLoader.class.getSimpleName();
     private static GlideImageLoader mInstance;
 
     private GlideImageLoader() {
@@ -67,7 +73,12 @@ public class GlideImageLoader implements BaseImageLoader{
                 .error(parameter.getErrorHolder())
                 .crossFade();
         if (parameter.getTarget() == null) {
-            drawableTypeRequest.into(parameter.getImageView());
+            if (parameter.getImageView() instanceof CircleImageView) {
+                throw new IllegalArgumentException("When use CircleImageView show image, Must Override CustomTargetProxy(T container, int width, int height) " +
+                        "and Width and height must both be > 0");
+            } else {
+                drawableTypeRequest.into(parameter.getImageView());
+            }
         } else {
             //new CustomTargetProxy<>(parameter.getImageView(), 100, 100)
             CustomTargetProxy target = (CustomTargetProxy) parameter.getTarget();
@@ -111,8 +122,28 @@ public class GlideImageLoader implements BaseImageLoader{
                 .into(parameter.getImageView());
     }
 
+    /**
+     * 释放资源
+     * @param context
+     */
     @Override
     public void clear(Context context) {
         Glide.get(context).clearMemory();
+    }
+
+    /**
+     * 取消请求或正在执行的操作
+     */
+    @Override
+    public void cancel(Object object) {
+      if (object instanceof View) {
+          Glide.clear((View) object);
+      } else if (object instanceof Target<?>) {
+          Glide.clear((Target<?>) object);
+      } else if (object instanceof FutureTarget<?>) {
+          Glide.clear((FutureTarget<?>) object);
+      } else {
+          android.util.Log.w(TAG, "You pass a effective object by Glide support");
+      }
     }
 }

@@ -16,7 +16,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.j1.healthcare.patient.R;
-import com.j1.healthcare.patient.utils.ImageCommonUtils;
 
 /***********
  *

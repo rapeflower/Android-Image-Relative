@@ -63,7 +63,7 @@ public class ImageLoaderManager {
                 , url
                 , DrawableHolder.mPlaceholderDrawable
                 , DrawableHolder.mErrorDrawable
-                , null);
+                , (Proxy) null);
         loadImage(context, parameter);
     }
 
@@ -98,7 +98,7 @@ public class ImageLoaderManager {
                 , url
                 , DrawableHolder.getDrawable(context, placeholderRes)
                 , DrawableHolder.getDrawable(context, errorHolderRes)
-                , null);
+                , (Proxy) null);
         loadImage(context, parameter);
     }
 
@@ -126,10 +126,23 @@ public class ImageLoaderManager {
      *
      * @param context
      */
-    public void clear(Context context) {
+    public static void clear(Context context) {
         if (imageLoader == null) {
             throw new IllegalArgumentException("You must pass in a non null imageLoader");
         }
         imageLoader.clear(context);
+    }
+
+    /**
+     * 清除掉所有的图片加载请求
+     *
+     * @param object 传入的值可以是这些类型或是其子类：
+     *               View、Target<?>，FutureTarget<?>
+     */
+    public static void cancel(Object object) {
+        if (imageLoader == null) {
+            throw new IllegalArgumentException("You must pass in a non null imageLoader");
+        }
+        imageLoader.cancel(object);
     }
 }

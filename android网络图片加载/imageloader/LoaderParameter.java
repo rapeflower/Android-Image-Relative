@@ -3,8 +3,6 @@ package com.j1.healthcare.patient.utils.imageloader;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.bumptech.glide.request.target.BaseTarget;
-
 
 /***********
  *

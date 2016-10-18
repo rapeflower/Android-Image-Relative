@@ -1,6 +1,7 @@
 package com.j1.healthcare.patient.utils.imageloader;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class CustomTargetProxy<T extends View> extends BaseTarget<Bitmap> implem
 
     @Override
     public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+        onJ1LoadCompleted(bitmap);
         if (view instanceof ImageView) {
             ImageView img = (ImageView) view;
 
@@ -82,5 +84,32 @@ public class CustomTargetProxy<T extends View> extends BaseTarget<Bitmap> implem
                     + ", either provide dimensions in the constructor or call override()");
         }
         cb.onSizeReady(width, height);
+    }
+
+    @Override
+    public void onLoadStarted(Drawable placeholder) {
+        super.onLoadStarted(placeholder);
+        onJ1LoadStarted(placeholder);
+    }
+
+    @Override
+    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+        super.onLoadFailed(e, errorDrawable);
+        onJ1LoadFailed(errorDrawable);
+    }
+
+    @Override
+    public void onJ1LoadStarted(Drawable placeholder) {
+        // Do nothing
+    }
+
+    @Override
+    public void onJ1LoadCompleted(Bitmap bitmap) {
+        // Do nothing
+    }
+
+    @Override
+    public void onJ1LoadFailed(Drawable errorDrawable) {
+        // Do nothing
     }
 }

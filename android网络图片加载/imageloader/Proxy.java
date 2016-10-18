@@ -7,6 +7,6 @@ package com.j1.healthcare.patient.utils.imageloader;
  * @Describe 基本的代理，以后所有加载网络图片包含Bitmap参数的回调都应实现该代理
  *
  */
-public interface Proxy {
+public interface Proxy extends LoadStatus{
     //empty
 }
